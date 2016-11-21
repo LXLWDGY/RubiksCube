@@ -9,7 +9,7 @@ const int kTwist = 2187; //Types of rotations(twists) of corners
 const int kFlipSlice = 64430; //Types of equivalence classes,combining both NFLIP and NSLICE but much smaller than their product
 const int kCorn6Pos = 20160; //Positions of 6 corners
 const int kEdge6Pos = 665280; //Positions of 6 edges 
-const int kEdge4Pos = 11880 //12!
+const int kEdge4Pos = 11880; //12!
 const int kGoal = 281816820;
 const unsigned long long int kCosetBuf = 1219276800;
 const unsigned long long int kCoset = 9754214400ULL;
@@ -111,7 +111,7 @@ char *gVisitedB;
 CubieCube CubeAxMove(CubieCube cc,Axis ax);
 void InitMoveCubes();
 CubieCube FaceletCubeToCubieCube(FaceletCube fc);
-FaceletCube CubieCubeToFaceletCube(CubieCube fc);
+FaceletCube CubieCubeToFaceletCube(CubieCube cc);
 CubieCube StringToCubieCube(char* defString);
 void CubieCubeToString(CubieCube cc, char* defString);
 CubieCube InvCubieCube(CubieCube cc);
@@ -136,7 +136,7 @@ int EdgeParity(CubieCube cc);
 void InitTwistMove();
 void InitCorn6PosMove();
 void InitEdge6PosMove();
-void InitEdge4Move();
+void InitEdge4PosMove();
 CoordCube CubieCubeToCoordCube(CubieCube cc);
 
 /* TODO(lxlwdgy): List of methods to implement.*/
