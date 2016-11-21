@@ -1,3 +1,4 @@
+#pragma once
 /*Consts*/
 const int kSym_Oh=48;
 const int kSym_D4h=16;
@@ -8,7 +9,7 @@ const int kTwist=2187; //Types of rotations(twists) of corners
 const int kFlipSlice=64430; //Types of equivalence classes,combining both NFLIP and NSLICE but much smaller than their product
 const int kCorn6Pos=20160; //Positions of 6 corners
 const int kEdge6Pos=665280; //Positions of 6 edges 
-const int kEdge4Pos=11880 //12!
+const int kEdge4Pos=11880; //12!
 const int kGoal=281816820;
 const unsigned long long int kCosetBuf=1219276800;
 const unsigned long long int kCoset=9754214400ULL;
@@ -32,7 +33,7 @@ typedef struct {
 } EdgeO;
 typedef enum tagSymmetry{S_URF3,S_F2,S_U4,S_LR2} BasicSym;
 typedef struct {
-    Color f[54]
+    Color f[54];
 } FaceletCube;
 typedef struct {
 	CornerO co[8];
@@ -84,15 +85,15 @@ char *gCoset;
 char *gVisitedA;
 char *gVisitedB;
 /* TODO(guojz16): List of methods to implement.*/
-/*cubie_cube.c*/
+/*cubie_cube.cpp*/
 CubieCube CubeAxMove(CubieCube cc,Axis ax);
 void InitMoveCubes();
 CubieCube FaceletCubeToCubieCube(FaceletCube fc);
 FaceletCube CubieCubeToFaceletCube(CubieCube fc);
 CubieCube StringToCubieCube(char* defString);
-void cubieCubeToString(CubieCube cc, char* defString);
+void CubieCubeToString(CubieCube cc, char* defString);
 CubieCube InvCubieCube(CubieCube cc);
-/*coord_cube.c*/
+/*coord_cube.cpp*/
 int Cnk(unsigned char n,unsigned char k);
 unsigned short int Twist(CubieCube cc);
 CubieCube InvTwist(unsigned short int twist);
@@ -114,7 +115,7 @@ void InitCorn6PosMove();
 void InitEdge6PosMove();
 void InitEdge4Move();
 CoordCube CubieCubeToCoordCube(CubieCube cc);
-/*symmetry.c*/
+/*symmetry.cpp*/
 void InitSymCubes();
 void InitInvSymIdx();
 void InitSymIdxMultiply();
@@ -129,11 +130,11 @@ unsigned long long GetSymmetries(CubieCube cc);
 int SymCount(unsigned long long sym);
 void InitGESymmetries();
 /*TODO(guojz16):End of the list.*/
-/*pruning.c*/
+/*pruning.cpp*/
 void InitMovesCloserToTarget();
 void InitMoveBitsConjugate();
 int DistanceToTarget(CoordCube co);
 void SolveOptimal(CubieCube cu);
 void InitNextMove();
-/*complex_algo.c*/
+/*complex_algo.cpp*/
 void pp();
