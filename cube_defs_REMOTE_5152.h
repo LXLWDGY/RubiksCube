@@ -1,4 +1,3 @@
-#pragma once
 /*Consts*/
 const int kSym_Oh = 48;
 const int kSym_D4h = 16;
@@ -107,16 +106,16 @@ char *gVisitedB;
 
 /* TODO(guojz16): List of methods to implement.*/
 
-/*cubie_cube.cpp*/
+/*cubie_cube.c*/
 CubieCube CubeAxMove(CubieCube cc,Axis ax);
 void InitMoveCubes();
 CubieCube FaceletCubeToCubieCube(FaceletCube fc);
 FaceletCube CubieCubeToFaceletCube(CubieCube fc);
 CubieCube StringToCubieCube(char* defString);
-void CubieCubeToString(CubieCube cc, char* defString);
+void cubieCubeToString(CubieCube cc, char* defString);
 CubieCube InvCubieCube(CubieCube cc);
 
-/*coord_cube.cpp*/
+/*coord_cube.c*/
 int Cnk(unsigned char n,unsigned char k);
 unsigned short int Twist(CubieCube cc);
 CubieCube InvTwist(unsigned short int twist);
@@ -141,7 +140,7 @@ CoordCube CubieCubeToCoordCube(CubieCube cc);
 
 /* TODO(lxlwdgy): List of methods to implement.*/
 
-/*symmetry.cpp*/
+/*symmetry.c*/
 void InitSymCubes();
 void InitInvSymIdx();
 void InitSymIdxMultiply();
@@ -158,7 +157,7 @@ void InitGESymmetries();
 
 /*TODO(guojz16):End of the list.*/
 
-/*pruning.cpp*/
+/*pruning.c*/
 void InitMovesCloserToTarget();
 void InitMoveBitsConjugate();
 int DistanceToTarget(CoordCube co);

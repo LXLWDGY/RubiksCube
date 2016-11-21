@@ -1,5 +1,24 @@
 #pragma once
 /*Consts*/
+<<<<<<< HEAD
+const int kSym_Oh=48;
+const int kSym_D4h=16;
+const int kMove=12;
+const int kFlip=2048; //Types of flip of edges
+const int kSlice=495; //Types of positions of UDSlices
+const int kTwist=2187; //Types of rotations(twists) of corners
+const int kFlipSlice=64430; //Types of equivalence classes,combining both NFLIP and NSLICE but much smaller than their product
+const int kCorn6Pos=20160; //Positions of 6 corners
+const int kEdge6Pos=665280; //Positions of 6 edges 
+const int kEdge4Pos=11880; //12!
+const int kGoal=281816820;
+const unsigned long long int kCosetBuf=1219276800;
+const unsigned long long int kCoset=9754214400ULL;
+const int kNode=40;
+const int kMBits=4096;
+/*Types*/
+typedef enum {U,R,F,D,L,B} Axis;
+=======
 const int kSym_Oh = 48;
 const int kSym_D4h = 16;
 const int kMove = 12;
@@ -20,6 +39,7 @@ const int kMBits = 4096;
 enum Axis {
 	U, R, F, D, L, B
 };
+>>>>>>> f0d85f3238d51c6c7155b8dc4e4a320e5c1846f4
 typedef Axis Color;
 enum Move {
 	mU1, mU3, mR1, mR3, mF1, mF3, mD1, mD3, mL1, mL3, mB1, mB3
@@ -50,11 +70,20 @@ struct CornerO {
 struct EdgeO{
     Edge e;
     char o;
+<<<<<<< HEAD
+} EdgeO;
+typedef enum tagSymmetry{S_URF3,S_F2,S_U4,S_LR2} BasicSym;
+typedef struct {
+    Color f[54];
+} FaceletCube;
+typedef struct {
+=======
 };
 struct FaceletCube{
     Color f[54];
 };
 struct CubieCube{
+>>>>>>> f0d85f3238d51c6c7155b8dc4e4a320e5c1846f4
 	CornerO co[8];
 	EdgeO eo[12];
 };
@@ -106,8 +135,12 @@ char *gVisitedA;
 char *gVisitedB;
 
 /* TODO(guojz16): List of methods to implement.*/
-
+<<<<<<< HEAD
 /*cubie_cube.cpp*/
+=======
+
+/*cubie_cube.c*/
+>>>>>>> f0d85f3238d51c6c7155b8dc4e4a320e5c1846f4
 CubieCube CubeAxMove(CubieCube cc,Axis ax);
 void InitMoveCubes();
 CubieCube FaceletCubeToCubieCube(FaceletCube fc);
@@ -115,8 +148,12 @@ FaceletCube CubieCubeToFaceletCube(CubieCube fc);
 CubieCube StringToCubieCube(char* defString);
 void CubieCubeToString(CubieCube cc, char* defString);
 CubieCube InvCubieCube(CubieCube cc);
-
+<<<<<<< HEAD
 /*coord_cube.cpp*/
+=======
+
+/*coord_cube.c*/
+>>>>>>> f0d85f3238d51c6c7155b8dc4e4a320e5c1846f4
 int Cnk(unsigned char n,unsigned char k);
 unsigned short int Twist(CubieCube cc);
 CubieCube InvTwist(unsigned short int twist);
@@ -138,10 +175,14 @@ void InitCorn6PosMove();
 void InitEdge6PosMove();
 void InitEdge4Move();
 CoordCube CubieCubeToCoordCube(CubieCube cc);
+<<<<<<< HEAD
+/*symmetry.cpp*/
+=======
 
 /* TODO(lxlwdgy): List of methods to implement.*/
 
-/*symmetry.cpp*/
+/*symmetry.c*/
+>>>>>>> f0d85f3238d51c6c7155b8dc4e4a320e5c1846f4
 void InitSymCubes();
 void InitInvSymIdx();
 void InitSymIdxMultiply();
@@ -157,15 +198,23 @@ int SymCount(unsigned long long sym);
 void InitGESymmetries();
 
 /*TODO(guojz16):End of the list.*/
-
+<<<<<<< HEAD
 /*pruning.cpp*/
+=======
+
+/*pruning.c*/
+>>>>>>> f0d85f3238d51c6c7155b8dc4e4a320e5c1846f4
 void InitMovesCloserToTarget();
 void InitMoveBitsConjugate();
 int DistanceToTarget(CoordCube co);
 void SolveOptimal(CubieCube cu);
 void InitNextMove();
+<<<<<<< HEAD
+/*complex_algo.cpp*/
+=======
 
 /*TODO(lxlwdgy):End of the list.*/
 
 /*complex_algo.c*/
+>>>>>>> f0d85f3238d51c6c7155b8dc4e4a320e5c1846f4
 void pp();
