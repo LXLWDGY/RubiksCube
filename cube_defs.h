@@ -8,7 +8,7 @@ const int kTwist = 2187; //Types of rotations(twists) of corners
 const int kFlipSlice = 64430; //Types of equivalence classes,combining both NFLIP and NSLICE but much smaller than their product
 const int kCorn6Pos = 20160; //Positions of 6 corners
 const int kEdge6Pos = 665280; //Positions of 6 edges 
-const int kEdge4Pos = 11880 //12!
+const int kEdge4Pos = 11880; //12!
 const int kGoal = 281816820;
 const unsigned long long int kCosetBuf = 1219276800;
 const unsigned long long int kCoset = 9754214400ULL;
@@ -66,17 +66,17 @@ struct CoordCube{
 	short int parity;
 };
 struct SearchNode{
-	unsigned short int flip_slice_u, flip_slice_r, flip_slice_f;
-	unsigned short int sym_u, sym_r, sym_f;
+	unsigned short int flip_slice_U, flip_slice_R, flip_slice_F;
+	unsigned short int sym_U, sym_R, sym_F;
 	unsigned short int parity;
-	unsigned short int twist_u, twist_r, twist_f;
+	unsigned short int twist_U, twist_R, twist_F;
 	unsigned short int corn_6_pos;
 	unsigned short int edge_4_pos;
 	int edge_6_pos;
-	short int moves_closer_target_u, moves_closer_target_r, moves_closer_target_f;
+	short int moves_closer_target_U, moves_closer_target_R, moves_closer_target_F;
 	short int moves_allowed;
 	short int move;
-	short int dist_u, dist_r, dist_f;
+	short int dist_U, dist_R, dist_F;
 	unsigned long long m_sym;	
 };
 
