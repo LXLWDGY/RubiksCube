@@ -135,7 +135,7 @@ int EdgeParity(CubieCube cc);
 void InitTwistMove();
 void InitCorn6PosMove();
 void InitEdge6PosMove();
-void InitEdge4Move();
+void InitEdge4PosMove();
 CoordCube CubieCubeToCoordCube(CubieCube cc);
 
 /* TODO(lxlwdgy): List of methods to implement.*/
@@ -144,7 +144,7 @@ CoordCube CubieCubeToCoordCube(CubieCube cc);
 void InitSymCubes();
 void InitInvSymIdx();
 void InitSymIdxMultiply();
-void InitRawFLipSliceRep();
+void InitRawFlipSliceRep();
 void InitSymFlipSliceClassMove();
 int SymFlipSliceMove(int symFlipSlice, int m);
 void InitMoveConjugate();
