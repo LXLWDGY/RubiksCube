@@ -1,3 +1,5 @@
+#ifndef CUBEDEFS_H_
+#define CUBEDEFS_H_
 /*Consts*/
 const int kSym_Oh = 48;
 const int kSym_D4h = 16;
@@ -99,10 +101,10 @@ short MoveBitsConjugate[kMBits][kSym_Oh];
 unsigned long long ESymmetries[kMove],GESymmetries[kMove];
 
 
-char *gCoset;
+//char *gCoset;
 
-char *gVisitedA;
-char *gVisitedB;
+//char *gVisitedA;
+//char *gVisitedB;
 
 /* TODO(guojz16): List of methods to implement.*/
 
@@ -112,7 +114,7 @@ void InitMoveCubes();
 CubieCube FaceletCubeToCubieCube(FaceletCube fc);
 FaceletCube CubieCubeToFaceletCube(CubieCube fc);
 CubieCube StringToCubieCube(char* defString);
-void cubieCubeToString(CubieCube cc, char* defString);
+void CubieCubeToString(CubieCube cc, char* def_string);
 CubieCube InvCubieCube(CubieCube cc);
 
 /*coord_cube.c*/
@@ -168,3 +170,4 @@ void InitNextMove();
 
 /*complex_algo.c*/
 void pp();
+#endif
