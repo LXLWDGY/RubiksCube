@@ -18,20 +18,13 @@ namespace tk_gjz010_rubik_symmetry{
     const int kMaxSym[4]={3,2,4,2};
 
 }
-namespace tk_gjz010_rubik_cubiecube{
-    extern CubieCube kIdCube;
-    extern CubieCube BasicCubeMove[6];
-    extern void CubieCubeMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
-    extern void CubieCubeCornerMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
-    extern void CubieCubeEdgeMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
-}
 void InitSymCubes(){
     int id=0;
-    CubieCube curr,next;
+    CubieCube curr = tk_gjz010_rubik_cubiecube::kIdCube,next;
     for(int i=0;i<tk_gjz010_rubik_symmetry::kMaxSym[S_URF3];i++){
         for(int j=0;j<tk_gjz010_rubik_symmetry::kMaxSym[S_F2];j++){
-            for(int k=0;i<tk_gjz010_rubik_symmetry::kMaxSym[S_U4];k++){
-                for(int l=0;i<tk_gjz010_rubik_symmetry::kMaxSym[S_LR2];l++){
+            for(int k=0;k<tk_gjz010_rubik_symmetry::kMaxSym[S_U4];k++){
+                for(int l=0;l<tk_gjz010_rubik_symmetry::kMaxSym[S_LR2];l++){
                     SymCube[id]=curr;
                     id++;
                     tk_gjz010_rubik_cubiecube::CubieCubeMultiply(&curr,&tk_gjz010_rubik_symmetry::CubieBasicSym[S_LR2],&next);
@@ -102,24 +95,22 @@ void InitRawFlipSliceRep(){
 };
 void InitSymFlipSliceClassMove(){
     CubieCube cc_flip,cc_slice,sfs[4];
-    for(int f=0;f<kFlip;f++)
-        for(int s=0;s<kSlice;s++){
-            int index=s*kFlip+f;
-            int rep=RawFlipSliceRep[index];
-            cc_slice=InvSlice(rep/kSlice);
-            cc_flip=InvFlip(rep%kFlip);
-            for (int n=0;n<12;n++) cc_flip.eo[n].e = cc_slice.eo[n].e;
-            sfs[0]=cc_flip;
-            for(Move m=mU1;m<=mB3;m=(Move)(m+2)){
-                Axis axis=(Axis)(m>>1);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[1]);
-		        SymFlipSliceClassMove[index][m] = SymFlipSlice(sfs[1]);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[2]);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[3]);
-		        SymFlipSliceClassMove[index][m+1] = SymFlipSlice(sfs[3]);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[0]);
-            }
+    for(int index=0;index<kFlipSlice;index++){
+        int rep=RawFlipSliceRep[index];
+        cc_slice=InvSlice(rep/kSlice);
+        cc_flip=InvFlip(rep%kFlip);
+        for (int n=0;n<12;n++) cc_flip.eo[n].e = cc_slice.eo[n].e;
+        sfs[0]=cc_flip;
+        for(Move m=mU1;m<=mB3;m=(Move)(m+2)){
+            Axis axis=(Axis)(m>>1);
+	        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[1]);
+	        SymFlipSliceClassMove[index][m] = SymFlipSlice(sfs[1]);
+	        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[2]);
+	        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[3]);
+	        SymFlipSliceClassMove[index][m+1] = SymFlipSlice(sfs[3]);
+	        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[0]);
         }
+    }
 }
 int SymFlipSliceMove(int sym_flip_slice, int m){
     int aSym,aClass,bSym,bClass,mConj,b;

@@ -1,5 +1,5 @@
-#ifndef CUBEDEFS_H_
-#define CUBEDEFS_H_
+#ifndef _CUBEDEFS_H_
+#define _CUBEDEFS_H_
 /*Consts*/
 const int kSym_Oh = 48;
 const int kSym_D4h = 16;
@@ -83,22 +83,30 @@ struct SearchNode{
 };
 
 //Global Variables & Tables
-CubieCube SymCube[kSym_Oh];
-CubieCube MoveCube[kMove];
-int InvSymIdx[kSym_Oh];
-int SymIdxMultiply[kSym_Oh][kSym_Oh];
-int MoveConjugate[kMove][kSym_Oh];
-int TwistConjugate[kTwist][kSym_D4h]; //Only 16
-int RawFlipSliceRep[kFlipSlice];
-char NextMove[kMBits][kMove+1];
-unsigned short int TwistMove[kTwist][kMove];
-unsigned short int Corn6PosMove[kCorn6Pos][kMove];
-unsigned short int Edge4PosMove[kEdge4Pos][kMove];
-int Edge6PosMove[kEdge6Pos][kMove];
-int SymFlipSliceClassMove[kFlipSlice][kMove];
-short *MovesCloserToTarget[kTwist];
-short MoveBitsConjugate[kMBits][kSym_Oh];
-unsigned long long ESymmetries[kMove],GESymmetries[kMove];
+extern CubieCube SymCube[kSym_Oh];
+extern CubieCube MoveCube[kMove];
+extern int InvSymIdx[kSym_Oh];
+extern int SymIdxMultiply[kSym_Oh][kSym_Oh];
+extern int MoveConjugate[kMove][kSym_Oh];
+extern int TwistConjugate[kTwist][kSym_D4h]; //Only 16
+extern int RawFlipSliceRep[kFlipSlice];
+extern char NextMove[kMBits][kMove+1];
+extern unsigned short int TwistMove[kTwist][kMove];
+extern unsigned short int Corn6PosMove[kCorn6Pos][kMove];
+extern unsigned short int Edge4PosMove[kEdge4Pos][kMove];
+extern int Edge6PosMove[kEdge6Pos][kMove];
+extern int SymFlipSliceClassMove[kFlipSlice][kMove];
+extern short *MovesCloserToTarget[kTwist];
+extern short MoveBitsConjugate[kMBits][kSym_Oh];
+extern unsigned long long ESymmetries[kMove],GESymmetries[kMove];
+
+namespace tk_gjz010_rubik_cubiecube{
+    extern const CubieCube kIdCube;
+    extern const CubieCube BasicCubeMove[6];
+    extern void CubieCubeMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
+    extern void CubieCubeCornerMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
+    extern void CubieCubeEdgeMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
+}
 
 
 //char *gCoset;

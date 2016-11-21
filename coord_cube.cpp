@@ -22,13 +22,6 @@ namespace tk_gjz010_rubik_coordcube{
         (arr[len-1])=first;
     }
 }
-namespace tk_gjz010_rubik_cubiecube{
-    extern CubieCube kIdCube;
-    extern CubieCube BasicCubeMove[6];
-    extern void CubieCubeMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
-    extern void CubieCubeCornerMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
-    extern void CubieCubeEdgeMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
-}
 int Cnk(unsigned char n,unsigned char k){
     int a=1,b=1;
     if (n<k) return 0;
@@ -348,6 +341,14 @@ void InitEdge4PosMove(){
         }
     }
 };
+int CornerParity(CubieCube cc)
+{
+	int i,j,s=0;	
+	for (i=DRB;i>=URF+1;i--)
+	for (j=i-1;j>=URF;j--)
+		if (cc.co[j].c>cc.co[i].c) s++;
+	return s%2;
+}
 CoordCube CubieCubeToCoordCube(CubieCube cc){
     CoordCube co;
     co.corn_6_pos = Corn6Pos(cc);
