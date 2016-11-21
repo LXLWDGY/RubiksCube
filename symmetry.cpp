@@ -106,21 +106,21 @@ void InitSymFlipSliceClassMove(){
         for(int s=0;s<kSlice;s++){
             int index=s*kFlip+f;
             int rep=RawFlipSliceRep[index];
-            cc_slice=InvSlice(s);
-            cc_flip=InvFlip(f);
+            cc_slice=InvSlice(rep/kSlice);
+            cc_flip=InvFlip(rep%kFlip);
             for (int n=0;n<12;n++) cc_flip.eo[n].e = cc_slice.eo[n].e;
             sfs[0]=cc_flip;
             for(Move m=mU1;m<=mB3;m=(Move)(m+2)){
                 Axis axis=(Axis)(m>>1);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&sfs[1]);
+		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[1]);
 		        SymFlipSliceClassMove[index][m] = SymFlipSlice(sfs[1]);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&sfs[2]);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&sfs[3]);
+		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[2]);
+		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[3]);
 		        SymFlipSliceClassMove[index][m+1] = SymFlipSlice(sfs[3]);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&sfs[0]);
+		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[0]);
             }
         }
-};
+}
 int SymFlipSliceMove(int sym_flip_slice, int m){
     int aSym,aClass,bSym,bClass,mConj,b;
     aClass = sym_flip_slice>>4;aSym = sym_flip_slice&15;
@@ -153,7 +153,6 @@ void InitMoveConjugate(){
 };
 void InitTwistConjugate(){
     CubieCube cc,cc_conj;
-    int flag;
     for (int i=0;i<kTwist;i++){
         cc=InvTwist(i);
         for (int j=0;j<kSym_D4h;j++)

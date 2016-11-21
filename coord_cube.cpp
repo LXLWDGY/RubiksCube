@@ -45,7 +45,6 @@ unsigned short int Twist(CubieCube cc){
     return result;
 }
 CubieCube InvTwist(unsigned short int twist){
-    int c;
     CubieCube result=tk_gjz010_rubik_cubiecube::kIdCube;
     int twist_parity=0,tmod=0;
     for (Corner corn=DBL;corn>=URF;corn=(Corner)(corn-1)){
@@ -289,63 +288,63 @@ int EdgeParity(CubieCube cc){
     return s%2;
 }
 void InitTwistMove(){
-    CubieCube twist[4],inv;
+    CubieCube twist[4];
     for(int i=0;i<kTwist;i++){
         twist[0]=InvTwist(i);
         for(Move m=mU1;m<=mB3;m=(Move)(m+2)){
             Axis axis=(Axis)(m>>1);
-		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&twist[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&twist[1]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&twist[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&twist[1]);
 		    TwistMove[i][m] = Twist(twist[1]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&twist[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&twist[2]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&twist[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&twist[3]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&twist[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&twist[2]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&twist[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&twist[3]);
 		    TwistMove[i][m+1] = Twist(twist[3]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&twist[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&twist[0]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&twist[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&twist[0]);
         }
     }
 };
 void InitCorn6PosMove(){
-    CubieCube c6pos[4],inv;
+    CubieCube c6pos[4];
     for(int i=0;i<kCorn6Pos;i++){
         c6pos[0]=InvCorn6Pos(i);
         for(Move m=mU1;m<=mB3;m=(Move)(m+2)){
             Axis axis=(Axis)(m>>1);
-		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&c6pos[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&c6pos[1]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&c6pos[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&c6pos[1]);
 		    Corn6PosMove[i][m] = Corn6Pos(c6pos[1]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&c6pos[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&c6pos[2]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&c6pos[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&c6pos[3]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&c6pos[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&c6pos[2]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&c6pos[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&c6pos[3]);
 		    Corn6PosMove[i][m+1] = Corn6Pos(c6pos[3]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&c6pos[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&c6pos[0]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&c6pos[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&c6pos[0]);
         }
     }
 };
 void InitEdge6PosMove(){
-    CubieCube e6pos[4],inv;
+    CubieCube e6pos[4];
     for(int i=0;i<kEdge6Pos;i++){
         //if (!(i%40000)) pp();
         e6pos[0]=InvEdge6Pos(i);
         for(Move m=mU1;m<=mB3;m=(Move)(m+2)){
             Axis axis=(Axis)(m>>1);
-		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e6pos[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&e6pos[1]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e6pos[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&e6pos[1]);
 		    Edge6PosMove[i][m] = Edge6Pos(e6pos[1]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e6pos[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&e6pos[2]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e6pos[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&e6pos[3]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e6pos[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&e6pos[2]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e6pos[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&e6pos[3]);
 		    Edge6PosMove[i][m+1] = Edge6Pos(e6pos[3]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e6pos[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&e6pos[0]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e6pos[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&e6pos[0]);
         }
     }
 };
 void InitEdge4PosMove(){
-    CubieCube e4pos[4],inv;
+    CubieCube e4pos[4];
     for(int i=0;i<kEdge4Pos;i++){
         e4pos[0]=InvEdge4Pos(i);
         for(Move m=mU1;m<=mB3;m=(Move)(m+2)){
             Axis axis=(Axis)(m>>1);
-		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e4pos[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&e4pos[1]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e4pos[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&e4pos[1]);
 		    Edge4PosMove[i][m] = Edge6Pos(e4pos[1]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e4pos[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&e4pos[2]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e4pos[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&e4pos[3]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e4pos[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&e4pos[2]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e4pos[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&e4pos[3]);
 		    Edge4PosMove[i][m+1] = Edge6Pos(e4pos[3]);
-		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e4pos[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&e4pos[0]);
+		    tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&e4pos[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&e4pos[0]);
         }
     }
 };

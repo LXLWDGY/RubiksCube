@@ -111,9 +111,8 @@ void InitMoveCubes(){
 };
 CubieCube FaceletCubeToCubieCube(FaceletCube fc){
     CubieCube result;
-    Edge k,m; int ori;
-    Color col1,col2;
     for(Corner corn=URF;corn<=DRB;corn=(Corner)(corn+1)){
+        int ori;
 	    for (ori=0;ori<3;ori++)
 	    if (fc.f[tk_gjz010_rubik_cubiecube::CornerFacelet[corn][ori]]==U || fc.f[tk_gjz010_rubik_cubiecube::CornerFacelet[corn][ori]]==D) break;
 	    Color c1=fc.f[tk_gjz010_rubik_cubiecube::CornerFacelet[corn][(ori+1)%3]];
@@ -256,5 +255,6 @@ CubieCube InvCubieCube(CubieCube cc){
 		    if (result.co[corn].o<0) result.co[corn].o+=3;
 	    }
     }
-};
+    return result;
+}
 

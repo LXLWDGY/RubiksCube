@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CUBEDEFS_H_
+#define CUBEDEFS_H_
 /*Consts*/
 const int kSym_Oh = 48;
 const int kSym_D4h = 16;
@@ -67,17 +68,17 @@ struct CoordCube{
 	short int parity;
 };
 struct SearchNode{
-	unsigned short int flip_slice_u, flip_slice_r, flip_slice_f;
-	unsigned short int sym_u, sym_r, sym_f;
+	unsigned short int flip_slice_U, flip_slice_R, flip_slice_F;
+	unsigned short int sym_U, sym_R, sym_F;
 	unsigned short int parity;
-	unsigned short int twist_u, twist_r, twist_f;
+	unsigned short int twist_U, twist_R, twist_F;
 	unsigned short int corn_6_pos;
 	unsigned short int edge_4_pos;
 	int edge_6_pos;
-	short int moves_closer_target_u, moves_closer_target_r, moves_closer_target_f;
+	short int moves_closer_target_U, moves_closer_target_R, moves_closer_target_F;
 	short int moves_allowed;
 	short int move;
-	short int dist_u, dist_r, dist_f;
+	short int dist_U, dist_R, dist_F;
 	unsigned long long m_sym;	
 };
 
@@ -100,23 +101,23 @@ short MoveBitsConjugate[kMBits][kSym_Oh];
 unsigned long long ESymmetries[kMove],GESymmetries[kMove];
 
 
-char *gCoset;
+//char *gCoset;
 
-char *gVisitedA;
-char *gVisitedB;
+//char *gVisitedA;
+//char *gVisitedB;
 
 /* TODO(guojz16): List of methods to implement.*/
 
-/*cubie_cube.cpp*/
+/*cubie_cube.c*/
 CubieCube CubeAxMove(CubieCube cc,Axis ax);
 void InitMoveCubes();
 CubieCube FaceletCubeToCubieCube(FaceletCube fc);
-FaceletCube CubieCubeToFaceletCube(CubieCube cc);
+FaceletCube CubieCubeToFaceletCube(CubieCube fc);
 CubieCube StringToCubieCube(char* defString);
-void CubieCubeToString(CubieCube cc, char* defString);
+void CubieCubeToString(CubieCube cc, char* def_string);
 CubieCube InvCubieCube(CubieCube cc);
 
-/*coord_cube.cpp*/
+/*coord_cube.c*/
 int Cnk(unsigned char n,unsigned char k);
 unsigned short int Twist(CubieCube cc);
 CubieCube InvTwist(unsigned short int twist);
@@ -141,11 +142,11 @@ CoordCube CubieCubeToCoordCube(CubieCube cc);
 
 /* TODO(lxlwdgy): List of methods to implement.*/
 
-/*symmetry.cpp*/
+/*symmetry.c*/
 void InitSymCubes();
 void InitInvSymIdx();
 void InitSymIdxMultiply();
-void InitRawFLipSliceRep();
+void InitRawFlipSliceRep();
 void InitSymFlipSliceClassMove();
 int SymFlipSliceMove(int symFlipSlice, int m);
 void InitMoveConjugate();
@@ -158,7 +159,7 @@ void InitGESymmetries();
 
 /*TODO(guojz16):End of the list.*/
 
-/*pruning.cpp*/
+/*pruning.c*/
 void InitMovesCloserToTarget();
 void InitMoveBitsConjugate();
 int DistanceToTarget(CoordCube co);
@@ -169,3 +170,4 @@ void InitNextMove();
 
 /*complex_algo.c*/
 void pp();
+#endif
