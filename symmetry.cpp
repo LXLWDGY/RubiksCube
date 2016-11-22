@@ -1,5 +1,7 @@
 #include "cube_defs.h"
 #include <cstring>
+#include <cstdio>
+#include <cassert>
 namespace tk_gjz010_rubik_symmetry{
     const CubieCube CubieBasicSym[4]={
     {{{URF,1},{DFR,2},{DLF,1},{UFL,2},{UBR,2},{DRB,1},{DBL,2},{ULB,1}},    //S_URF3
@@ -56,17 +58,18 @@ void InitSymIdxMultiply(){
     CubieCube cc;
     for(int i=0;i<kSym_Oh;i++)
         for(int j=0;j<kSym_Oh;j++){
-            tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&tk_gjz010_rubik_symmetry::CubieBasicSym[i],&tk_gjz010_rubik_symmetry::CubieBasicSym[j],&cc);
+            tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&SymCube[i],&SymCube[j],&cc);
             for(int k=0;k<kSym_Oh;k++)
-                if (cc.eo[UR].e == tk_gjz010_rubik_symmetry::CubieBasicSym[k].eo[UR].e &&
-                    cc.eo[UF].e == tk_gjz010_rubik_symmetry::CubieBasicSym[k].eo[UF].e)
+                if (cc.eo[UR].e == SymCube[k].eo[UR].e &&
+                    cc.eo[UF].e == SymCube[k].eo[UF].e)
 	            {
 		            SymIdxMultiply[i][j]=k;
 		            break;
 	            }
         }
 };
-void InitRawFlipSliceRep(){
+void InitRawFlipSliceRep()
+/*{
     char flag[kSlice][kFlip];
     int id=0;
     CubieCube cc_slice,cc_flip,cc_conj;
@@ -75,7 +78,7 @@ void InitRawFlipSliceRep(){
     for(int i=0;i<kSlice;i++){
         cc_slice=InvSlice(i);
         for(int j=0;j<kFlip;j++){
-            if(flag[i][j]) continue;
+            if(flag[i][j]){continue;}
             cc_flip=InvFlip(j);
             for(Edge ed=UR;ed<=BR;ed=(Edge)(ed+1)){
                 cc_flip.eo[ed].e=cc_slice.eo[ed].e;
@@ -86,13 +89,49 @@ void InitRawFlipSliceRep(){
 			    flag[Slice(cc_conj)][Flip(cc_conj)]=1;//no representant
 		    }
 		    RawFlipSliceRep[id] = i*kFlip+j;
+		    //std::cout<<"Solving id "<<id<<std::endl;
 		    id++;
+		    
             
         }
         
     }
     
 };
+*/
+{
+int i,j,k,n,min,idx=0;
+CubieCube ccK,ccJ,ccI;
+char flag[kSlice*kFlip];
+for (j=0;j<kSlice*kFlip;j++) flag[j]=0;
+for (j=0;j<kSlice;j++)
+{
+	ccJ = InvSlice(j);
+	for (k=0;k<kFlip;k++)
+	{
+	    printf("Solving %d\n",idx);
+		min = kFlip*j + k;
+		if (flag[min]==1) continue;//no representant
+		ccK = InvFlip(k);
+		for (n=0;n<12;n++){
+		ccK.eo[n].e = ccJ.eo[n].e; 
+		printf("Moving edge %d\n",ccK.eo[n].e);
+		}
+		//merge ccK and ccJ
+		
+		for (i=0;i<kSym_D4h;i++)
+		{
+			ccI = EdgeConjugate(ccK,i);
+			n = kFlip*Slice(ccI) + Flip(ccI);
+			printf("Solving conflict %d\n",n);
+			//std::cout<<"Solving id "<<idx<<std::endl;
+			flag[n]=1;//no representant
+		}
+		RawFlipSliceRep[idx++] = min;
+		assert(idx<=kFlipSlice);
+	}
+}
+}
 void InitSymFlipSliceClassMove(){
     CubieCube cc_flip,cc_slice,sfs[4];
     for(int index=0;index<kFlipSlice;index++){

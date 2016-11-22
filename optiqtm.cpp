@@ -31,21 +31,37 @@ void pp() {
 
 int main() {
 	printf("Initializing Tables..."); fflush(stdout);
+	printf("InitSymCubes();");fflush(stdout);
 	InitSymCubes();
+	printf("InitMoveCubes();");fflush(stdout);
 	InitMoveCubes();
+	printf("InitSymIdxMultiply();");fflush(stdout);
 	InitSymIdxMultiply();
+	printf("InitMoveConjugate();");fflush(stdout);
 	InitMoveConjugate();
+	printf("InitMoveBitsConjugate();");fflush(stdout);
 	InitMoveBitsConjugate();
+	printf("InitGESymmetries();");fflush(stdout);
 	InitGESymmetries();
+	printf("InitTwistConjugate();");fflush(stdout);
 	InitTwistConjugate();
+	printf("InitRawFlipSliceRep();");fflush(stdout);
 	InitRawFlipSliceRep();
+	printf("InitTwistMove();");fflush(stdout);
 	InitTwistMove();
+	printf("InitCorn6PosMove();");fflush(stdout);
 	InitCorn6PosMove();
+	printf("InitEdge4PosMove();");fflush(stdout);
 	InitEdge4PosMove();
+	printf("InitEdge6PosMove();");fflush(stdout);
 	InitEdge6PosMove();
+	printf("InitSymFlipSliceClassMove();");fflush(stdout);
 	InitSymFlipSliceClassMove();
+	printf("InitMovesCloserToTarget();");fflush(stdout);
 	InitMovesCloserToTarget();
+	printf("InitNextMove();");fflush(stdout);
 	InitNextMove();
+	printf("Done");fflush(stdout);
 	printf("\n");
 
 	while (1) {

@@ -16,7 +16,7 @@ namespace tk_gjz010_rubik_coordcube{
     //eg. {1,2,3,4} -> {2,3,4,1}
     void PushBackward(int* arr,int len){
         int first=(arr[0]);
-        for(int i=0;i<len-1;i--){
+        for(int i=0;i<len-1;i++){
             (arr[i])=(arr[i+1]);
         }
         (arr[len-1])=first;
@@ -52,23 +52,30 @@ CubieCube InvTwist(unsigned short int twist){
 unsigned short int Flip(CubieCube cc){
     short int result=0;
     for(Edge ed=UR;ed<BR;ed=(Edge)(ed+1)){
-        result<<=2;
-        result+=cc.eo[ed].o;
+        result = 2*result + cc.eo[ed].o;
     }
     return result;
 };
 CubieCube InvFlip(unsigned short int flip){
+/*
     CubieCube result=tk_gjz010_rubik_cubiecube::kIdCube;
     int flip_parity=0;
     int fmod;
-    for (Edge ed=BL;ed>=UR;ed=(Edge)(ed-1)){
+    for (Edge ed=(Edge)(BR-1);ed>=UR;ed=(Edge)(ed-1)){
         fmod=flip&1;
         result.eo[ed].o=fmod;
         flip_parity+=fmod;
-        flip>>=2;
+        flip>>=1;
     }
     result.eo[BR].o=(2-flip_parity%2)%2;
     return result;
+*/
+int e;
+CubieCube ccRet=tk_gjz010_rubik_cubiecube::kIdCube;;
+int flipParity=0;
+for (e= BR-1;e>=UR;e--){flipParity += ccRet.eo[e].o = flip%2; flip /=2;}
+ccRet.eo[BR].o = (2 - flipParity%2)%2;
+return ccRet;
 };
 unsigned short int Corn6Pos(CubieCube cc){
     int a=0,b=0,x=0,k,perm[6];
@@ -214,7 +221,7 @@ CubieCube InvEdge4Pos(int idx){
 };
 unsigned short int Slice(CubieCube cc){
     int sum=0,k=0;
-    for (Edge ed=BL;ed>=UR;ed=(Edge)(ed-1)){
+    for (Edge ed=BR;ed>=UR;ed=(Edge)(ed-1)){
         if (FR<=cc.eo[ed].e && cc.eo[ed].e<=BR ){
             sum+=Cnk(11-ed,k+1);
             k++;
@@ -223,25 +230,37 @@ unsigned short int Slice(CubieCube cc){
     return sum;
 };
 CubieCube InvSlice(unsigned short int slice){
+/*
     int a=slice;
     int perm[4]={8,9,10,11};
     CubieCube result=tk_gjz010_rubik_cubiecube::kIdCube;
-    for(Edge ed=UR;ed<BR;ed=(Edge)(ed+1)) result.eo[ed].e=(Edge)100; //Taint all edges
+    for(Edge ed=UR;ed<=BR;ed=(Edge)(ed+1)) result.eo[ed].e=(Edge)100; //Taint all edges
 
     int x=3; //Find the biggest positions one by one.
-    for(Edge ed=UR;ed<BR;ed=(Edge)(ed+1))
+    for(Edge ed=UR;ed<=BR;ed=(Edge)(ed+1))
         if (a-Cnk(11-ed,x+1)>=0){
             result.eo[ed].e = (Edge)perm[x];
             a-=Cnk(11-ed,x+1);
             x--;
         }
     x=0;
-    for (Edge ed=UR;ed<BR;ed=(Edge)(ed+1)) //Fillback the non-UDslice edges.
+    for (Edge ed=UR;ed<=BR;ed=(Edge)(ed+1)) //Fillback the non-UDslice edges.
         if (result.eo[ed].e==(Edge)100){
             result.eo[ed].e = (Edge)x;
             x++;
         };
     return result;
+    */
+int a=slice,j,x,perm[4]={8,9,10,11};;
+CubieCube ccRet=tk_gjz010_rubik_cubiecube::kIdCube;
+for (j=UR;j<=BR;j++) ccRet.eo[j].e =(Edge)255;//Invalidate all edges
+
+x = 3;//generate combination and set edges
+for (j=UR;j<=BR;j++)
+if (a - Cnk(11-j,x+1)>=0) {ccRet.eo[j].e = Edge(perm[x]); a -=Cnk(11-j,x-- +1);}
+for (j=UR,x=0;j<=BR;j++)//set the remaining edges 0..7
+if (ccRet.eo[j].e == (Edge)255) ccRet.eo[j].e = (Edge)(x++);
+return ccRet;
 };
 int SymFlipSlice(CubieCube cc){
     int rep=kFlip*kSlice;
