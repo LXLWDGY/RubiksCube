@@ -1,5 +1,7 @@
 #include "cube_defs.h"
 #include <cstring>
+#include <cstdio>
+#include <cassert>
 namespace tk_gjz010_rubik_symmetry{
     const CubieCube CubieBasicSym[4]={
     {{{URF,1},{DFR,2},{DLF,1},{UFL,2},{UBR,2},{DRB,1},{DBL,2},{ULB,1}},    //S_URF3
@@ -18,20 +20,13 @@ namespace tk_gjz010_rubik_symmetry{
     const int kMaxSym[4]={3,2,4,2};
 
 }
-namespace tk_gjz010_rubik_cubiecube{
-    extern CubieCube kIdCube;
-    extern CubieCube BasicCubeMove[6];
-    extern void CubieCubeMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
-    extern void CubieCubeCornerMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
-    extern void CubieCubeEdgeMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab);
-}
 void InitSymCubes(){
     int id=0;
-    CubieCube curr,next;
+    CubieCube curr = tk_gjz010_rubik_cubiecube::kIdCube,next;
     for(int i=0;i<tk_gjz010_rubik_symmetry::kMaxSym[S_URF3];i++){
         for(int j=0;j<tk_gjz010_rubik_symmetry::kMaxSym[S_F2];j++){
-            for(int k=0;i<tk_gjz010_rubik_symmetry::kMaxSym[S_U4];k++){
-                for(int l=0;i<tk_gjz010_rubik_symmetry::kMaxSym[S_LR2];l++){
+            for(int k=0;k<tk_gjz010_rubik_symmetry::kMaxSym[S_U4];k++){
+                for(int l=0;l<tk_gjz010_rubik_symmetry::kMaxSym[S_LR2];l++){
                     SymCube[id]=curr;
                     id++;
                     tk_gjz010_rubik_cubiecube::CubieCubeMultiply(&curr,&tk_gjz010_rubik_symmetry::CubieBasicSym[S_LR2],&next);
@@ -51,7 +46,7 @@ void InitInvSymIdx(){
     CubieCube cc;
     for(int i=0;i<kSym_Oh;i++)
         for(int j=0;j<kSym_Oh;j++){
-            tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&tk_gjz010_rubik_symmetry::CubieBasicSym[i],&tk_gjz010_rubik_symmetry::CubieBasicSym[j],&cc);
+            tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&SymCube[i],&SymCube[j],&cc);
             if (cc.co[URF].c == URF && cc.co[UFL].c == UFL && cc.co[ULB].c == ULB)
 	        {
 		        InvSymIdx[i] = j;
@@ -63,17 +58,18 @@ void InitSymIdxMultiply(){
     CubieCube cc;
     for(int i=0;i<kSym_Oh;i++)
         for(int j=0;j<kSym_Oh;j++){
-            tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&tk_gjz010_rubik_symmetry::CubieBasicSym[i],&tk_gjz010_rubik_symmetry::CubieBasicSym[j],&cc);
+            tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&SymCube[i],&SymCube[j],&cc);
             for(int k=0;k<kSym_Oh;k++)
-                if (cc.eo[UR].e == tk_gjz010_rubik_symmetry::CubieBasicSym[k].eo[UR].e &&
-                    cc.eo[UF].e == tk_gjz010_rubik_symmetry::CubieBasicSym[k].eo[UF].e)
+                if (cc.eo[UR].e == SymCube[k].eo[UR].e &&
+                    cc.eo[UF].e == SymCube[k].eo[UF].e)
 	            {
 		            SymIdxMultiply[i][j]=k;
 		            break;
 	            }
         }
 };
-void InitRawFlipSliceRep(){
+void InitRawFlipSliceRep()
+/*{
     char flag[kSlice][kFlip];
     int id=0;
     CubieCube cc_slice,cc_flip,cc_conj;
@@ -82,7 +78,7 @@ void InitRawFlipSliceRep(){
     for(int i=0;i<kSlice;i++){
         cc_slice=InvSlice(i);
         for(int j=0;j<kFlip;j++){
-            if(flag[i][j]) continue;
+            if(flag[i][j]){continue;}
             cc_flip=InvFlip(j);
             for(Edge ed=UR;ed<=BR;ed=(Edge)(ed+1)){
                 cc_flip.eo[ed].e=cc_slice.eo[ed].e;
@@ -93,34 +89,68 @@ void InitRawFlipSliceRep(){
 			    flag[Slice(cc_conj)][Flip(cc_conj)]=1;//no representant
 		    }
 		    RawFlipSliceRep[id] = i*kFlip+j;
+		    //std::cout<<"Solving id "<<id<<std::endl;
 		    id++;
+		    
             
         }
         
     }
     
 };
+*/
+{
+int i,j,k,n,min,idx=0;
+CubieCube ccK,ccJ,ccI;
+char flag[kSlice*kFlip];
+for (j=0;j<kSlice*kFlip;j++) flag[j]=0;
+for (j=0;j<kSlice;j++)
+{
+	ccJ = InvSlice(j);
+	for (k=0;k<kFlip;k++)
+	{
+	    //printf("Solving %d\n",idx);
+		min = kFlip*j + k;
+		if (flag[min]==1) continue;//no representant
+		ccK = InvFlip(k);
+		for (n=0;n<12;n++){
+		ccK.eo[n].e = ccJ.eo[n].e; 
+		//printf("Moving edge %d\n",ccK.eo[n].e);
+		}
+		//merge ccK and ccJ
+		
+		for (i=0;i<kSym_D4h;i++)
+		{
+			ccI = EdgeConjugate(ccK,i); 
+			n = kFlip*Slice(ccI) + Flip(ccI);
+			//printf("Solving conflict %d\n",n);
+			//std::cout<<"Solving id "<<idx<<std::endl;
+			flag[n]=1;//no representant
+		}
+		RawFlipSliceRep[idx++] = min;
+		assert(idx<=kFlipSlice);
+	}
+}
+}
 void InitSymFlipSliceClassMove(){
     CubieCube cc_flip,cc_slice,sfs[4];
-    for(int f=0;f<kFlip;f++)
-        for(int s=0;s<kSlice;s++){
-            int index=s*kFlip+f;
-            int rep=RawFlipSliceRep[index];
-            cc_slice=InvSlice(s);
-            cc_flip=InvFlip(f);
-            for (int n=0;n<12;n++) cc_flip.eo[n].e = cc_slice.eo[n].e;
-            sfs[0]=cc_flip;
-            for(Move m=mU1;m<=mB3;m=(Move)(m+2)){
-                Axis axis=(Axis)(m>>1);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&sfs[1]);
-		        SymFlipSliceClassMove[index][m] = SymFlipSlice(sfs[1]);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&sfs[2]);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&sfs[3]);
-		        SymFlipSliceClassMove[index][m+1] = SymFlipSlice(sfs[3]);
-		        tk_gjz010_rubik_cubiecube::CubieCubeCornerMultiply(&sfs[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[m],&sfs[0]);
-            }
+    for(int index=0;index<kFlipSlice;index++){
+        int rep=RawFlipSliceRep[index];
+        cc_slice=InvSlice(rep/kFlip);
+        cc_flip=InvFlip(rep%kFlip);
+        for (int n=0;n<12;n++) cc_flip.eo[n].e = cc_slice.eo[n].e;
+        sfs[0]=cc_flip;
+        for(Move m=mU1;m<=mB3;m=(Move)(m+2)){
+            Axis axis=(Axis)(m>>1);
+	        tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&sfs[0],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[1]);
+	        SymFlipSliceClassMove[index][m] = SymFlipSlice(sfs[1]);
+	        tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&sfs[1],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[2]);
+	        tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&sfs[2],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[3]);
+	        SymFlipSliceClassMove[index][m+1] = SymFlipSlice(sfs[3]);
+	        tk_gjz010_rubik_cubiecube::CubieCubeEdgeMultiply(&sfs[3],&tk_gjz010_rubik_cubiecube::BasicCubeMove[axis],&sfs[0]);
         }
-};
+    }
+}
 int SymFlipSliceMove(int sym_flip_slice, int m){
     int aSym,aClass,bSym,bClass,mConj,b;
     aClass = sym_flip_slice>>4;aSym = sym_flip_slice&15;
@@ -153,7 +183,6 @@ void InitMoveConjugate(){
 };
 void InitTwistConjugate(){
     CubieCube cc,cc_conj;
-    int flag;
     for (int i=0;i<kTwist;i++){
         cc=InvTwist(i);
         for (int j=0;j<kSym_D4h;j++)

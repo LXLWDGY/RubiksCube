@@ -48,6 +48,7 @@ void CubieCubeCornerMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab
             ori=oria-orib;
             if(ori<0) ori+=3;
         }
+        ab->co[corn].o=ori;
     }
 }
 void CubieCubeEdgeMultiply(const CubieCube* a,const CubieCube* b,CubieCube* ab){
@@ -105,15 +106,14 @@ void InitMoveCubes(){
     for(Axis ax=U;ax<=B;ax=(Axis)(ax+1)){
         cc=tk_gjz010_rubik_cubiecube::BasicCubeMove[ax];
         MoveCube[ax*2]=cc;
-        CubeAxMove(cc,ax);
+        cc=CubeAxMove(cc,ax);
         MoveCube[ax*2+1]=CubeAxMove(cc,ax);
     }
 };
 CubieCube FaceletCubeToCubieCube(FaceletCube fc){
     CubieCube result;
-    Edge k,m; int ori;
-    Color col1,col2;
     for(Corner corn=URF;corn<=DRB;corn=(Corner)(corn+1)){
+        int ori;
 	    for (ori=0;ori<3;ori++)
 	    if (fc.f[tk_gjz010_rubik_cubiecube::CornerFacelet[corn][ori]]==U || fc.f[tk_gjz010_rubik_cubiecube::CornerFacelet[corn][ori]]==D) break;
 	    Color c1=fc.f[tk_gjz010_rubik_cubiecube::CornerFacelet[corn][(ori+1)%3]];
@@ -256,5 +256,6 @@ CubieCube InvCubieCube(CubieCube cc){
 		    if (result.co[corn].o<0) result.co[corn].o+=3;
 	    }
     }
-};
+    return result;
+}
 
