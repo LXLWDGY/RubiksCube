@@ -1,0 +1,4 @@
+optiqtm
+*.o
+*.dmp
+prune_table

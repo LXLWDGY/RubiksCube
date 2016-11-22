@@ -23,7 +23,7 @@ namespace Pruning {
 		fflush(stdout);
 
 		unsigned long int index, index_new, entry_count = 1;
-		int flip_slice, flip_slice_new, twist, twist_new, parity, parity_new,, sym_flip_slice_new, sym_new;
+		int flip_slice, flip_slice_new, twist, twist_new, parity, parity_new, sym_flip_slice_new, sym_new;
 		Move next_move;
 		visitedA[0] = 1; visitedB[0] = 1;
 		while (entry_count < kGoal) {
@@ -42,8 +42,9 @@ namespace Pruning {
 								index_new = ((kTwist * flip_slice_new + twist_new) << 1) + parity_new;
 								if (visitedA[index_new >> 3] & 1 << (index_new & 7)) {
 									MovesCloserToTarget[twist][(flip_slice << 1) + parity] |= (1 << next_move);
+									//printf("MovesCloserToTarget[%d][%d] |= (%d);\n",twist,(flip_slice << 1) + parity,1 << next_move);
 									if (!(visitedB[index >> 3] & 1 << (index & 7))) {
-										visitedB[index >> 3] |= (1 << index & 7);
+										visitedB[index >> 3] |= (1 << (index & 7));
 										++entry_count;
 									}
 								}
@@ -67,8 +68,10 @@ namespace Pruning {
 	}
 	void LoadTable(FILE *PruneTable) {
 		printf("\nLoading pruning table from disk...");
+		fseek(PruneTable, 0, SEEK_SET);
 		for (int it = 0; it < kTwist; it++) {
 			if (it % 200 == 0) pp();
+			
 			fread(MovesCloserToTarget[it], kFlipSlice * 4, 1, PruneTable);
 		}
 		fclose(PruneTable);
@@ -179,6 +182,9 @@ void SolveOptimal(CubieCube C) {
 	P->flip_slice_U = CU.sym_flip_slice >> 4;
 	P->flip_slice_R = CR.sym_flip_slice >> 4;
 	P->flip_slice_F = CF.sym_flip_slice >> 4;
+    P->sym_U = CU.sym_flip_slice&15;
+    P->sym_R = CR.sym_flip_slice&15;
+    P->sym_F = CF.sym_flip_slice&15;
 	P->parity = CU.parity;
 	P->twist_U = CU.twist;
 	P->twist_R = CR.twist;
@@ -216,7 +222,7 @@ void SolveOptimal(CubieCube C) {
 		P->move = NextMove[P->moves_allowed][++(P->move)];
 		if (P->move == -1) {
 			if (r_depth == man_len) {
-				printf("depth %2u completed, %14I64u nodes, %14I64u tests\n", man_len, node_count, test_count);
+				printf("depth %2u completed, %14"PRIu64" nodes, %14"PRIu64" tests\n", man_len, node_count, test_count);
 			}
 			else  {
 				++r_depth;
@@ -280,8 +286,8 @@ void SolveOptimal(CubieCube C) {
 		twist_conj_F = TwistConjugate[P_new->twist_F][P_new->sym_F];
 
 		P_new->moves_closer_target_U = MoveBitsConjugate[MovesCloserToTarget[twist_conj_U][(P_new->flip_slice_U << 1) + P_new->parity]][P_new->sym_U];
-		P_new->moves_closer_target_R = MoveBitsConjugate[MovesCloserToTarget[twist_conj_R][(P_new->flip_slice_R << 1) + P_new->parity]][P_new->sym_R];
-		P_new->moves_closer_target_F = MoveBitsConjugate[MovesCloserToTarget[twist_conj_F][(P_new->flip_slice_F << 1) + P_new->parity]][P_new->sym_F];
+		P_new->moves_closer_target_R = MoveBitsConjugate[MovesCloserToTarget[twist_conj_R][(P_new->flip_slice_R << 1) + P_new->parity]][SymIdxMultiply[P_new->sym_R][16]];
+		P_new->moves_closer_target_F = MoveBitsConjugate[MovesCloserToTarget[twist_conj_F][(P_new->flip_slice_F << 1) + P_new->parity]][SymIdxMultiply[P_new->sym_F][32]];
 
 		P_new->moves_allowed = MovesDefault[P->move];
 		--r_depth;

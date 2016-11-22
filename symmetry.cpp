@@ -205,7 +205,7 @@ CubieCube CornerConjugate(CubieCube cc, int sym_idx){
     return cc;
 };
 unsigned long long GetSymmetries(CubieCube cc){
-    unsigned long long result;
+    unsigned long long result=0;
     char flag;
     CubieCube ap,pap;
     //The step is to calc P^(-1)*A*P

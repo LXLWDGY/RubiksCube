@@ -19,17 +19,17 @@ const int kMBits = 4096;
 
 /*Basic Types*/
 enum Axis {
-	U, R, F, D, L, B
+	U, R, F, D, L, B,aEnd
 };
 typedef Axis Color;
 enum Move {
-	mU1, mU3, mR1, mR3, mF1, mF3, mD1, mD3, mL1, mL3, mB1, mB3
+	mU1, mU3, mR1, mR3, mF1, mF3, mD1, mD3, mL1, mL3, mB1, mB3,mEnd
 };
 enum Corner{
-	URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB
+	URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB,cEnd
 };
 enum Edge{
-	UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR
+	UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR,eEnd
 };
 enum Facelet{
 	U1, U2, U3, U4, U5, U6, U7, U8, U9,
@@ -37,10 +37,10 @@ enum Facelet{
 	F1, F2, F3, F4, F5, F6, F7, F8, F9,
 	D1, D2, D3, D4, D5, D6, D7, D8, D9,
 	L1, L2, L3, L4, L5, L6, L7, L8, L9,
-	B1, B2, B3, B4, B5, B6, B7, B8, B9
+	B1, B2, B3, B4, B5, B6, B7, B8, B9,fEnd
 };
 enum BasicSym{
-	S_URF3, S_F2, S_U4, S_LR2
+	S_URF3, S_F2, S_U4, S_LR2,symEnd
 };
 
 /*Advanced Types*/
