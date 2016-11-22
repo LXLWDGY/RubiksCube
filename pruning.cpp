@@ -22,8 +22,8 @@ namespace Pruning {
 		printf("\nGenerating pruning table for the first time.\n");
 		fflush(stdout);
 
-		unsigned long int entry_count = 1;
-		int flip_slice, flip_slice_new, twist, twist_new, parity, parity_new, index, index_new, sym_flip_slice_new, sym_new;
+		unsigned long int index, index_new, entry_count = 1;
+		int flip_slice, flip_slice_new, twist, twist_new, parity, parity_new,, sym_flip_slice_new, sym_new;
 		Move next_move;
 		visitedA[0] = 1; visitedB[0] = 1;
 		while (entry_count < kGoal) {
@@ -42,7 +42,6 @@ namespace Pruning {
 								index_new = ((kTwist * flip_slice_new + twist_new) << 1) + parity_new;
 								if (visitedA[index_new >> 3] & 1 << (index_new & 7)) {
 									MovesCloserToTarget[twist][(flip_slice << 1) + parity] |= (1 << next_move);
-									printf("MovesCloserToTarget[%d][%d] |= (%d);\n",twist,(flip_slice << 1) + parity,1 << next_move);
 									if (!(visitedB[index >> 3] & 1 << (index & 7))) {
 										visitedB[index >> 3] |= (1 << index & 7);
 										++entry_count;
