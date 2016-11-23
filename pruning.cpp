@@ -223,6 +223,11 @@ void SolveOptimal(CubieCube C) {
 		if (P->move == -1) {
 			if (r_depth == man_len) {
 				printf("depth %2u completed, %14"PRIu64" nodes, %14"PRIu64" tests\n", man_len, node_count, test_count);
+				r_depth += 2;
+				man_len = r_depth;
+				if (man_len > OptimalDist - 2) return;
+				P->moves_allowed = 0xfff;
+				P->m_sym = sym;
 			}
 			else  {
 				++r_depth;
